@@ -1,11 +1,8 @@
 package usecase
 
-import "github.com/sandronister/cassandra-go/internal/infra/database/repositories"
-
-var (
-	keyspace = "cassandra_go"
-	table    = "users"
-	fields   = "name TEXT, email TEXT"
+import (
+	"github.com/sandronister/cassandra-go/internal/entity"
+	"github.com/sandronister/cassandra-go/internal/infra/database/repositories"
 )
 
 type MigrationsUsecase struct {
@@ -29,13 +26,9 @@ func (u *MigrationsUsecase) Run() error {
 }
 
 func (u *MigrationsUsecase) createKeyspace() error {
-	return u.repo.CreateKeyspace(keyspace)
+	return u.repo.CreateKeyspace(entity.Keyspace)
 }
 
 func (u *MigrationsUsecase) createTable() error {
-	return u.repo.CreateTable(keyspace, table, fields)
-}
-
-func (u *MigrationsUsecase) dropTable() error {
-	return u.repo.DropTable(keyspace, table)
+	return u.repo.CreateTable(entity.Keyspace, entity.Table, entity.Fields)
 }

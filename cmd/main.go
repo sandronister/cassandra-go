@@ -21,11 +21,19 @@ func main() {
 
 	defer db.Close()
 
-	usecase := di.NewMigrationUseCase(db)
+	migrationUseCase := di.NewMigrationUseCase(db)
+	seedUseCase := di.NewSeedUsecase(db)
 
-	err = usecase.Run()
+	err = migrationUseCase.Run()
 
 	if err != nil {
 		panic(err)
 	}
+
+	err = seedUseCase.CreateUserTable()
+
+	if err != nil {
+		panic(err)
+	}
+
 }
