@@ -22,3 +22,19 @@ func (r *UserRepository) CreateUserTable(users []entity.User) error {
 	}
 	return nil
 }
+
+func (r *UserRepository) FindAll() ([]*entity.User, error) {
+	var users []*entity.User
+	iter := r.session.Query("SELECT name,email,password FROM cassandra_go.users").Iter()
+	for {
+		var user entity.User
+		if !iter.Scan(&user.Name, &user.Email, &user.Password) {
+			break
+		}
+		users = append(users, &user)
+	}
+	if err := iter.Close(); err != nil {
+		return nil, err
+	}
+	return users, nil
+}

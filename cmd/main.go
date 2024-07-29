@@ -21,19 +21,16 @@ func main() {
 
 	defer db.Close()
 
-	migrationUseCase := di.NewMigrationUseCase(db)
-	seedUseCase := di.NewSeedUsecase(db)
+	userUcase := di.NewUserUsecase(db)
 
-	err = migrationUseCase.Run()
+	list, err := userUcase.GetUsers()
 
 	if err != nil {
 		panic(err)
 	}
 
-	err = seedUseCase.CreateUserTable()
-
-	if err != nil {
-		panic(err)
+	for _, user := range list {
+		println(user.ID, user.Name, user.Email, user.Password)
 	}
 
 }
