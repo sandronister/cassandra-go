@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"log"
+
 	configs "github.com/sandronister/cassandra-go/config"
 	"github.com/sandronister/cassandra-go/internal/di"
 	"github.com/sandronister/cassandra-go/internal/infra/database/connection"
@@ -21,16 +24,39 @@ func main() {
 
 	defer db.Close()
 
-	userUcase := di.NewUserUsecase(db)
-
-	list, err := userUcase.GetUsers()
+	migrationUseCase := di.NewMigrationUseCase(db)
+	err = migrationUseCase.Run()
 
 	if err != nil {
 		panic(err)
 	}
 
-	for _, user := range list {
-		println(user.ID, user.Name, user.Email, user.Password)
+	// seedUseCase := di.NewSeedUsecase(db)
+
+	// err = seedUseCase.CreateDrivers()
+
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	driverUseCase := di.NewDriverUseCase(db)
+
+	list, err := driverUseCase.GetDrivers()
+
+	if err != nil {
+		log.Printf("Error: %v", err)
+		return
+	}
+
+	for _, driver := range list {
+		fmt.Printf("Driver License ID: %v\n", driver.LicenseID)
+		fmt.Printf("Driver Name: %v\n", driver.Name)
+		fmt.Printf("Vehicle Brand: %v\n", driver.VehicleBrand)
+		fmt.Printf("Vehicle Model: %v\n", driver.VehicleModel)
+		fmt.Printf("License Plate: %v\n", driver.LicensePlate)
+		fmt.Printf("Year: %v\n", driver.Year)
+		fmt.Printf("Created At: %v\n", driver.CreatedAt)
+		fmt.Println("=====================================")
 	}
 
 }

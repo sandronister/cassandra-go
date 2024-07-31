@@ -22,6 +22,10 @@ func (u *MigrationsUsecase) Run() error {
 		return err
 	}
 
+	if err := u.createIndex(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -31,4 +35,8 @@ func (u *MigrationsUsecase) createKeyspace() error {
 
 func (u *MigrationsUsecase) createTable() error {
 	return u.repo.CreateTable(entity.Keyspace, entity.Table, entity.Fields)
+}
+
+func (u *MigrationsUsecase) createIndex() error {
+	return u.repo.CreateIndex(entity.Keyspace, entity.Table, entity.IndexField)
 }

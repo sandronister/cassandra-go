@@ -6,7 +6,7 @@ import (
 	"github.com/sandronister/cassandra-go/internal/usecase"
 )
 
-func NewUserUsecase(session *gocql.Session) *usecase.UserUsecase {
+func NewDriverUseCase(session *gocql.Session) *usecase.DriverUseCase {
 	repository := repositories.NewUserRepository(session)
-	return usecase.NewUserUsecase(repository)
+	return usecase.NewDriverUseCase(repository)
 }

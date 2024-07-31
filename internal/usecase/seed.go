@@ -1,18 +1,18 @@
 package usecase
 
 import (
+	"github.com/sandronister/cassandra-go/internal/infra/database/query"
 	"github.com/sandronister/cassandra-go/internal/infra/database/repositories"
-	"github.com/sandronister/cassandra-go/internal/infra/database/seed"
 )
 
 type Seed struct {
-	repository *repositories.UserRepository
+	repository *repositories.DriverTruckRepository
 }
 
-func NewSeed(repository *repositories.UserRepository) *Seed {
+func NewSeed(repository *repositories.DriverTruckRepository) *Seed {
 	return &Seed{repository}
 }
 
-func (s *Seed) CreateUserTable() error {
-	return s.repository.CreateUserTable(seed.GetUsers())
+func (s *Seed) CreateDrivers() error {
+	return s.repository.CreateDriver(query.GetDrivers())
 }
