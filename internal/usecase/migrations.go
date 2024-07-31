@@ -38,5 +38,11 @@ func (u *MigrationsUsecase) createTable() error {
 }
 
 func (u *MigrationsUsecase) createIndex() error {
-	return u.repo.CreateIndex(entity.Keyspace, entity.Table, entity.IndexField)
+	for indexName, indexField := range entity.Indexes {
+		if err := u.repo.CreateIndex(indexName, entity.Keyspace, entity.Table, indexField); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

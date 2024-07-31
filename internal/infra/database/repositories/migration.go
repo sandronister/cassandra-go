@@ -21,6 +21,6 @@ func (r *MigrationsRepository) CreateTable(keyspace, table, fields string) error
 	return r.session.Query(migrations.CreateTableQuery(keyspace, table, fields)).Exec()
 }
 
-func (r *MigrationsRepository) CreateIndex(keyspace, table string, fields string) error {
-	return r.session.Query(migrations.CreateIndexQuery(keyspace, table, fields)).Exec()
+func (r *MigrationsRepository) CreateIndex(indexName, keyspace, table, fields string) error {
+	return r.session.Query(migrations.CreateIndexQuery(indexName, keyspace, table, fields)).Exec()
 }
