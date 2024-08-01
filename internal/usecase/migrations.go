@@ -34,7 +34,7 @@ func (u *MigrationsUsecase) createKeyspace() error {
 }
 
 func (u *MigrationsUsecase) createTable() error {
-	return u.repo.CreateTable(entity.Keyspace, entity.Table, entity.Fields)
+	return u.repo.CreateTable(entity.Keyspace, entity.Table, entity.Fields, entity.PrimaryKey, entity.Orderby)
 }
 
 func (u *MigrationsUsecase) createIndex() error {

@@ -16,7 +16,7 @@ func NewUserRepository(session *gocql.Session) *DriverTruckRepository {
 
 func (r *DriverTruckRepository) CreateDriver(driversTruck []*entity.DriversTruck) error {
 	for _, driver := range driversTruck {
-		if err := r.session.Query(query.GetInsert(), driver.LicenseID, driver.Name, driver.VehicleBrand, driver.VehicleModel, driver.Year, driver.LicensePlate, driver.CreatedAt).Exec(); err != nil {
+		if err := r.session.Query(query.GetInsert(), driver.CompanyId, driver.LicenseID, driver.Name, driver.VehicleBrand, driver.VehicleModel, driver.Year, driver.LicensePlate, driver.CreatedAt).Exec(); err != nil {
 			return err
 		}
 	}

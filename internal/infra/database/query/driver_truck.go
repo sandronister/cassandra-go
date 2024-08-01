@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	InsertDriverTruck = `INSERT INTO %s.%s (license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at) VALUES (?, ?, ?, ?, ?, ?, ?);`
+	InsertDriverTruck = `INSERT INTO %s.%s (company_id,license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at) VALUES (?,?, ?, ?, ?, ?, ?, ?);`
 	SelectDriverTruck = `SELECT license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at, updated_at, deleted_at FROM %s.%s`
 )
 
@@ -22,10 +22,12 @@ var (
 var ListDrivers = generateDrivers(50)
 
 func generateDrivers(n int) []*entity.DriversTruck {
+	listCompany := []string{"company1", "company2", "company3", "company4", "company5"}
 
 	var drivers []*entity.DriversTruck
 	for i := 1; i <= n; i++ {
 		drivers = append(drivers, &entity.DriversTruck{
+			CompanyId:    listCompany[rand.Intn(len(listCompany))],
 			LicenseID:    uuid.New().String(),
 			Name:         fmt.Sprintf("Driver%d", i),
 			VehicleBrand: fmt.Sprintf("Brand%d", i),

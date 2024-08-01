@@ -31,13 +31,13 @@ func main() {
 		panic(err)
 	}
 
-	// seedUseCase := di.NewSeedUsecase(db)
+	seedUseCase := di.NewSeedUsecase(db)
 
-	// err = seedUseCase.CreateDrivers()
+	err = seedUseCase.CreateDrivers()
 
-	// if err != nil {
-	// 	panic(err)
-	// }
+	if err != nil {
+		panic(err)
+	}
 
 	driverUseCase := di.NewDriverUseCase(db)
 

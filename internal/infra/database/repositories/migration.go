@@ -17,8 +17,8 @@ func (r *MigrationsRepository) CreateKeyspace(keyspace string) error {
 	return r.session.Query(migrations.CreateKeyspace(keyspace)).Exec()
 }
 
-func (r *MigrationsRepository) CreateTable(keyspace, table, fields string) error {
-	return r.session.Query(migrations.CreateTableQuery(keyspace, table, fields)).Exec()
+func (r *MigrationsRepository) CreateTable(keyspace, table, fields, primaryKey, orderby string) error {
+	return r.session.Query(migrations.CreateTableQuery(keyspace, table, fields, primaryKey, orderby)).Exec()
 }
 
 func (r *MigrationsRepository) CreateIndex(indexName, keyspace, table, fields string) error {
