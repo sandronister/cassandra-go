@@ -10,7 +10,7 @@ type Conf struct {
 
 func LoadConfig(path string) (*Conf, error) {
 	var cfg *Conf
-	viper.SetConfigName("go_mongo")
+	viper.SetConfigName("cassandra_go")
 	viper.SetConfigType("env")
 	viper.AddConfigPath(path)
 	viper.SetConfigFile(".env")
