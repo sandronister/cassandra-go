@@ -6,10 +6,10 @@ import (
 )
 
 type DriverUseCase struct {
-	repo repository.IDriver
+	repo repository.IDriverTruck
 }
 
-func NewDriverUseCase(repo repository.IDriver) *DriverUseCase {
+func NewDriverUseCase(repo repository.IDriverTruck) *DriverUseCase {
 	return &DriverUseCase{repo: repo}
 }
 

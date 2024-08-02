@@ -14,5 +14,13 @@ func NewSeed(repository *repositories.DriverTruckRepository) *Seed {
 }
 
 func (s *Seed) CreateDrivers() error {
-	return s.repository.CreateDriver(query.GetDrivers())
+	list := query.GetDrivers()
+
+	for _, driver := range list {
+		if err := s.repository.Save(driver); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

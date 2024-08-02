@@ -10,8 +10,11 @@ import (
 )
 
 const (
-	InsertDriverTruck = `INSERT INTO %s.%s (company_id,license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at) VALUES (?,?, ?, ?, ?, ?, ?, ?);`
-	SelectDriverTruck = `SELECT license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at, updated_at, deleted_at FROM %s.%s`
+	insertDriverTruck    = `INSERT INTO %s.%s (company_id,license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at) VALUES (?,?, ?, ?, ?, ?, ?, ?);`
+	selectDriverTruck    = `SELECT license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at, updated_at, deleted_at FROM %s.%s`
+	selectByLicenseId    = `SELECT company_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at, updated_at, deleted_at FROM %s.%s WHERE license_id = ?`
+	selectByLicensePlate = `SELECT company_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at, updated_at, deleted_at FROM %s.%s WHERE license_plate = ?`
+	selectByCompanyId    = `SELECT license_id, name, vehicle_brand, vehicle_model, year, license_plate, created_at, updated_at, deleted_at FROM %s.%s WHERE company_id = ?`
 )
 
 var (
@@ -42,13 +45,25 @@ func generateDrivers(n int) []*entity.DriversTruck {
 }
 
 func GetInsert() string {
-	return fmt.Sprintf(InsertDriverTruck, Keyspace, Table)
+	return fmt.Sprintf(insertDriverTruck, Keyspace, Table)
 }
 
 func GetSelect() string {
-	return fmt.Sprintf(SelectDriverTruck, Keyspace, Table)
+	return fmt.Sprintf(selectDriverTruck, Keyspace, Table)
 }
 
 func GetDrivers() []*entity.DriversTruck {
 	return ListDrivers
+}
+
+func GetSelectByLicenseID() string {
+	return fmt.Sprintf(selectByLicenseId, Keyspace, Table)
+}
+
+func GetSelectByLicensePlate() string {
+	return fmt.Sprintf(selectByLicensePlate, Keyspace, Table)
+}
+
+func GetSelectByCompanyId() string {
+	return fmt.Sprintf(selectByCompanyId, Keyspace, Table)
 }
