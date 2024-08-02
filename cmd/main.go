@@ -49,12 +49,12 @@ func main() {
 	}
 
 	for _, driver := range list {
-		fmt.Printf("Driver License ID: %v\n", driver.LicenseID)
+		fmt.Printf("Driver License ID: %v\n", driver.LicenseId)
 		fmt.Printf("Driver Name: %v\n", driver.Name)
 		fmt.Printf("Vehicle Brand: %v\n", driver.VehicleBrand)
 		fmt.Printf("Vehicle Model: %v\n", driver.VehicleModel)
 		fmt.Printf("License Plate: %v\n", driver.LicensePlate)
-		fmt.Printf("Year: %v\n", driver.Year)
+		fmt.Printf("Year: %v\n", driver.VehicleYear)
 		fmt.Printf("Created At: %v\n", driver.CreatedAt)
 		fmt.Println("=====================================")
 	}
