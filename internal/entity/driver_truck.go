@@ -30,7 +30,7 @@ type DriversTruck struct {
 	DeletedAt    time.Time
 }
 
-func NewDriversTruck(companyId, licenseID, name, vehicleBrand, vehicleModel, licensePlate string, year int) (*DriversTruck, error) {
+func NewDriverTruck(companyId, licenseID, name, vehicleBrand, vehicleModel, licensePlate string, year int) (*DriversTruck, error) {
 	driverTruck := &DriversTruck{
 		CompanyId:    companyId,
 		LicenseID:    licenseID,
