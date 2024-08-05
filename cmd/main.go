@@ -16,23 +16,18 @@ func main() {
 
 	defer db.Close()
 
-	migrationUseCase := di.NewMigrationUseCase(db)
-	err = migrationUseCase.Run()
-
+	migrationsService := di.NewMigrationService(db)
+	err = migrationsService.Run()
 	logger.Info(err)
 
 	seedService := di.NewSeedService(db)
-
 	err = seedService.CreateDrivers()
-
 	logger.Info(err)
 
 	driverHandler := di.NewDriverHandler(db)
 
 	server := server.NewServer(config.Port)
-
 	server.AddHDriverTruckHandler(driverHandler)
-
 	server.Run()
 
 }
