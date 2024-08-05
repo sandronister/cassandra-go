@@ -9,5 +9,7 @@ import (
 func NewSeedService(session *gocql.Session) *services.Seed {
 	driverTruckRepo := repositories.NewDriverTruckRepository(session)
 	companyRepo := repositories.NewCompanyRepository(session)
-	return services.NewSeed(driverTruckRepo, companyRepo)
+	driversRepo := repositories.NewDriversRepository(session)
+	truckRepo := repositories.NewTruckRepository(session)
+	return services.NewSeed(driverTruckRepo, companyRepo, driversRepo, truckRepo)
 }

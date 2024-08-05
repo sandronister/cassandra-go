@@ -8,18 +8,22 @@ import (
 type Seed struct {
 	driverTruckRepo repository.IDriverTruck
 	companyRepo     repository.ICompany
+	driverRepo      repository.IDriver
+	truckRepo       repository.ITruck
 }
 
-func NewSeed(driverTruckRepo repository.IDriverTruck, companyRepo repository.ICompany) *Seed {
+func NewSeed(driverTruckRepo repository.IDriverTruck, companyRepo repository.ICompany, driverRepo repository.IDriver, truckRepo repository.ITruck) *Seed {
 	return &Seed{
 		driverTruckRepo: driverTruckRepo,
 		companyRepo:     companyRepo,
+		driverRepo:      driverRepo,
+		truckRepo:       truckRepo,
 	}
 }
 
 func (s *Seed) CreateDrivers() error {
 
-	list, _ := s.driverTruckRepo.FindAll()
+	list, _ := s.driverRepo.FindAll()
 
 	if list != nil {
 		return nil
@@ -27,7 +31,24 @@ func (s *Seed) CreateDrivers() error {
 
 	listDrivers := generates.Drivers(50)
 	for _, driver := range listDrivers {
-		if err := s.driverTruckRepo.Save(driver); err != nil {
+		if err := s.driverRepo.Save(driver); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *Seed) CreateTrucks() error {
+	list, _ := s.driverTruckRepo.FindAll()
+
+	if list != nil {
+		return nil
+	}
+
+	listTrucks := generates.Trucks(50)
+	for _, truck := range listTrucks {
+		if err := s.driverTruckRepo.Save(truck); err != nil {
 			return err
 		}
 	}
@@ -48,6 +69,22 @@ func (s *Seed) CreateCompany() error {
 		if err := s.companyRepo.Save(company); err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (s *Seed) Run() error {
+	if err := s.CreateCompany(); err != nil {
+		return err
+	}
+
+	if err := s.CreateDrivers(); err != nil {
+		return err
+	}
+
+	if err := s.CreateTrucks(); err != nil {
+		return err
 	}
 
 	return nil
