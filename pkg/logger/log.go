@@ -50,12 +50,12 @@ func NewLogger(folder string) (*Logger, error) {
 	return &Logger{fileName: fileName}, nil
 }
 
-func (l *Logger) Info(infoErr error) {
-	if infoErr == nil {
+func (l *Logger) Error(err error) {
+	if err == nil {
 		return
 	}
 
-	formatErr := fmt.Sprintf("[INFO] %s", infoErr)
+	formatErr := fmt.Sprintf("[ERROR] [%s] %s\n", time.Now().Format("2006-01-02"), err.Error())
 	file, err := os.OpenFile(l.fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		return

@@ -6,15 +6,7 @@ import (
 )
 
 var (
-	Keyspace   = "cassandra_go"
-	Table      = "drivers_truck"
-	Fields     = "company_id VARCHAR,license_id VARCHAR, name VARCHAR, vehicle_brand VARCHAR, vehicle_model VARCHAR, year INT, license_plate VARCHAR, created_at DATE, updated_at DATE, deleted_at DATE"
-	PrimaryKey = "company_id,name"
-	Orderby    = "name"
-	Indexes    = map[string]string{
-		"inx_plate": "license_plate",
-		"inx_brand": "vehicle_brand",
-	}
+	Keyspace               = "cassandra_go"
 	ErrDriverTruckInvalid  = fmt.Errorf("invalid driver truck")
 	ErrCompanyIDInvalid    = fmt.Errorf("invalid company id")
 	ErrLicenseIDInvalid    = fmt.Errorf("invalid license id")

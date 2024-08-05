@@ -1,29 +1,39 @@
 package services
 
 import (
+	"fmt"
+
 	"github.com/sandronister/cassandra-go/internal/entity"
 	"github.com/sandronister/cassandra-go/internal/infra/database/repositories"
+	"github.com/sandronister/cassandra-go/internal/services/tables"
 )
 
 type Migrations struct {
-	repo *repositories.MigrationsRepository
+	repo       *repositories.MigrationsRepository
+	infoTables []*tables.InfoTable
 }
 
 func NewMigrations(repo *repositories.MigrationsRepository) *Migrations {
-	return &Migrations{repo}
+	infoTables := tables.GetAllMigrations()
+	return &Migrations{repo, infoTables}
 }
 
-func (u *Migrations) Run() error {
-	if err := u.createKeyspace(); err != nil {
+func (s *Migrations) Run() error {
+
+	if err := s.createKeyspace(); err != nil {
 		return err
 	}
 
-	if err := u.createTable(); err != nil {
-		return err
-	}
+	for _, infoTable := range s.infoTables {
 
-	if err := u.createIndex(); err != nil {
-		return err
+		if err := s.createTable(infoTable); err != nil {
+			return err
+		}
+
+		if err := s.createIndex(infoTable.Table, infoTable.Keyspace, infoTable.Indexes); err != nil {
+			return err
+		}
+
 	}
 
 	return nil
@@ -33,14 +43,14 @@ func (u *Migrations) createKeyspace() error {
 	return u.repo.CreateKeyspace(entity.Keyspace)
 }
 
-func (u *Migrations) createTable() error {
-	return u.repo.CreateTable(entity.Keyspace, entity.Table, entity.Fields, entity.PrimaryKey, entity.Orderby)
+func (u *Migrations) createTable(info *tables.InfoTable) error {
+	return u.repo.CreateTable(info.Keyspace, info.Table, info.Fields, info.PrimaryKey, info.Orderby)
 }
 
-func (u *Migrations) createIndex() error {
-	for indexName, indexField := range entity.Indexes {
-		if err := u.repo.CreateIndex(indexName, entity.Keyspace, entity.Table, indexField); err != nil {
-			return err
+func (u *Migrations) createIndex(table, keyspace string, indexes map[string]string) error {
+	for indexName, indexField := range indexes {
+		if err := u.repo.CreateIndex(indexName, keyspace, table, indexField); err != nil {
+			return fmt.Errorf("[TABLE] %s error creating index %s: %w", table, indexName, err)
 		}
 	}
 

@@ -18,11 +18,11 @@ func main() {
 
 	migrationsService := di.NewMigrationService(db)
 	err = migrationsService.Run()
-	logger.Info(err)
+	logger.Error(err)
 
 	seedService := di.NewSeedService(db)
 	err = seedService.CreateDrivers()
-	logger.Info(err)
+	logger.Error(err)
 
 	driverHandler := di.NewDriverHandler(db)
 
