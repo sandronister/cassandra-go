@@ -6,7 +6,7 @@ import (
 
 type Conf struct {
 	Ips          []string `mapstructure:"IPS"`
-	Port         int      `mapstructure:"PORT"`
+	Port         string   `mapstructure:"PORT"`
 	Keyspace     string   `mapstructure:"KEYSPACE"`
 	LoggerFolder string   `mapstructure:"LOGGER_FOLDER"`
 }
