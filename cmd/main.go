@@ -1,14 +1,14 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/sandronister/cassandra-go/cmd/factory"
 	"github.com/sandronister/cassandra-go/internal/di"
+	"github.com/sandronister/cassandra-go/internal/infra/web/server"
 )
 
 func main() {
 
-	logger, db, err := initialFactory()
+	config, logger, db, err := factory.GetObjects()
 
 	if err != nil {
 		panic(err)
@@ -19,18 +19,20 @@ func main() {
 	migrationUseCase := di.NewMigrationUseCase(db)
 	err = migrationUseCase.Run()
 
-	if err != nil {
-		logger.Info(fmt.Sprintf("Error: %v", err))
-	}
+	logger.Info(err)
 
 	seedService := di.NewSeedService(db)
 
 	err = seedService.CreateDrivers()
 
-	if err != nil {
-		logger.Info(fmt.Sprintf("Error: %v", err))
-	}
+	logger.Info(err)
 
-	driverUseCase := di.NewDriverUseCase(db)
+	driverHandler := di.NewDriverHandler(db)
+
+	server := server.NewServer(config.Port)
+
+	server.AddHDriverTruckHandler(driverHandler)
+
+	server.Run()
 
 }

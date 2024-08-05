@@ -1,4 +1,4 @@
-package main
+package factory
 
 import (
 	"fmt"
@@ -9,25 +9,25 @@ import (
 	"github.com/sandronister/cassandra-go/pkg/logger"
 )
 
-func initialFactory() (*logger.Logger, *gocql.Session, error) {
+func GetObjects() (*configs.Conf, *logger.Logger, *gocql.Session, error) {
 	conf, err := configs.LoadConfig(".")
 
 	if err != nil {
-		return nil, nil, fmt.Errorf("Error loading config: %v", err)
+		return nil, nil, nil, fmt.Errorf("error loading config: %v", err)
 	}
 
 	logger, err := logger.NewLogger(conf.LoggerFolder)
 
 	if err != nil {
-		return nil, nil, fmt.Errorf("Error loading logger: %v", err)
+		return nil, nil, nil, fmt.Errorf("error loading logger: %v", err)
 	}
 
 	db, err := connection.NewCassandraConnection(conf)
 
 	if err != nil {
-		return nil, nil, fmt.Errorf("Error loading database: %v", err)
+		return nil, nil, nil, fmt.Errorf("error loading database: %v", err)
 	}
 
-	return logger, db, nil
+	return conf, logger, db, nil
 
 }
