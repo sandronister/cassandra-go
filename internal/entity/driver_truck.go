@@ -15,6 +15,14 @@ var (
 		"inx_plate": "license_plate",
 		"inx_brand": "vehicle_brand",
 	}
+	ErrDriverTruckInvalid  = fmt.Errorf("invalid driver truck")
+	ErrCompanyIDInvalid    = fmt.Errorf("invalid company id")
+	ErrLicenseIDInvalid    = fmt.Errorf("invalid license id")
+	ErrDriverNameInvalid   = fmt.Errorf("invalid driver name")
+	ErrVehicleBrandInvalid = fmt.Errorf("invalid vehicle brand")
+	ErrVehicleModelInvalid = fmt.Errorf("invalid vehicle model")
+	ErrLicensePlateInvalid = fmt.Errorf("invalid license plate")
+	ErrVehicleYearInvalid  = fmt.Errorf("invalid vehicle year")
 )
 
 type DriversTruck struct {
@@ -44,41 +52,43 @@ func NewDriverTruck(companyId, licenseID, name, vehicleBrand, vehicleModel, lice
 		DeletedAt:    time.Time{},
 	}
 
-	if !driverTruck.IsValid() {
-		return nil, fmt.Errorf("invalid driver truck")
+	err := driverTruck.IsValid()
+
+	if err != nil {
+		return nil, err
 	}
 
 	return driverTruck, nil
 }
 
-func (dt *DriversTruck) IsValid() bool {
+func (dt *DriversTruck) IsValid() error {
 	if dt.CompanyId == "" || dt.CompanyId == "0" {
-		return false
+		return ErrCompanyIDInvalid
 	}
 
 	if dt.LicenseID == "" || dt.LicenseID == "0" {
-		return false
+		return ErrLicenseIDInvalid
 	}
 
 	if dt.Name == "" {
-		return false
+		return ErrDriverNameInvalid
 	}
 
 	if dt.VehicleBrand == "" {
-		return false
+		return ErrVehicleBrandInvalid
 	}
 
 	if dt.VehicleModel == "" {
-		return false
+		return ErrVehicleModelInvalid
 	}
 
 	if dt.LicensePlate == "" {
-		return false
+		return ErrLicensePlateInvalid
 	}
 
 	if dt.Year == 0 {
-		return false
+		return ErrVehicleYearInvalid
 	}
 
-	return true
+	return nil
 }
