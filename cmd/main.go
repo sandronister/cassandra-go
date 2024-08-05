@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	config, logger, db, err := factory.GetObjects()
+	config, logger, db, err := factory.Initial()
 
 	if err != nil {
 		panic(err)

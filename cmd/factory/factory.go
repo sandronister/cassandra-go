@@ -9,7 +9,7 @@ import (
 	"github.com/sandronister/cassandra-go/pkg/logger"
 )
 
-func GetObjects() (*configs.Conf, *logger.Logger, *gocql.Session, error) {
+func Initial() (*configs.Conf, *logger.Logger, *gocql.Session, error) {
 	conf, err := configs.LoadConfig(".")
 
 	if err != nil {
