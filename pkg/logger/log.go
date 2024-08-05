@@ -32,7 +32,7 @@ func createFile(fileName string) error {
 }
 
 func NewLogger(folder string) (*Logger, error) {
-
+	folder = fmt.Sprintf("../%s", folder)
 	err := createFolder(folder)
 
 	if err != nil {
