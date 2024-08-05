@@ -10,7 +10,7 @@ type DriverTruckRepository struct {
 	session *gocql.Session
 }
 
-func NewUserRepository(session *gocql.Session) *DriverTruckRepository {
+func NewDriverTruckRepository(session *gocql.Session) *DriverTruckRepository {
 	return &DriverTruckRepository{session}
 }
 

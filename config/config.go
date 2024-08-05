@@ -5,7 +5,10 @@ import (
 )
 
 type Conf struct {
-	Ips []string `mapstructure:"IPS"`
+	Ips          []string `mapstructure:"IPS"`
+	Port         int      `mapstructure:"PORT"`
+	Keyspace     string   `mapstructure:"KEYSPACE"`
+	LoggerFolder string   `mapstructure:"LOGGER_FOLDER"`
 }
 
 func LoadConfig(path string) (*Conf, error) {

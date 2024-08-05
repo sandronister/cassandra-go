@@ -7,6 +7,6 @@ import (
 )
 
 func NewDriverUseCase(session *gocql.Session) *usecase.DriverUseCase {
-	repository := repositories.NewUserRepository(session)
+	repository := repositories.NewDriverTruckRepository(session)
 	return usecase.NewDriverUseCase(repository)
 }

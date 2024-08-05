@@ -2,21 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 
-	configs "github.com/sandronister/cassandra-go/config"
 	"github.com/sandronister/cassandra-go/internal/di"
-	"github.com/sandronister/cassandra-go/internal/infra/database/connection"
 )
 
 func main() {
-	conf, err := configs.LoadConfig(".")
 
-	if err != nil {
-		panic(err)
-	}
-
-	db, err := connection.NewCassandraConnection(conf)
+	logger, db, err := initialFactory()
 
 	if err != nil {
 		panic(err)
@@ -28,35 +20,17 @@ func main() {
 	err = migrationUseCase.Run()
 
 	if err != nil {
-		panic(err)
+		logger.Info(fmt.Sprintf("Error: %v", err))
 	}
 
-	seedUseCase := di.NewSeedUsecase(db)
+	seedService := di.NewSeedService(db)
 
-	err = seedUseCase.CreateDrivers()
+	err = seedService.CreateDrivers()
 
 	if err != nil {
-		panic(err)
+		logger.Info(fmt.Sprintf("Error: %v", err))
 	}
 
 	driverUseCase := di.NewDriverUseCase(db)
-
-	list, err := driverUseCase.GetDrivers()
-
-	if err != nil {
-		log.Printf("Error: %v", err)
-		return
-	}
-
-	for _, driver := range list {
-		fmt.Printf("Driver License ID: %v\n", driver.LicenseId)
-		fmt.Printf("Driver Name: %v\n", driver.Name)
-		fmt.Printf("Vehicle Brand: %v\n", driver.VehicleBrand)
-		fmt.Printf("Vehicle Model: %v\n", driver.VehicleModel)
-		fmt.Printf("License Plate: %v\n", driver.LicensePlate)
-		fmt.Printf("Year: %v\n", driver.VehicleYear)
-		fmt.Printf("Created At: %v\n", driver.CreatedAt)
-		fmt.Println("=====================================")
-	}
 
 }

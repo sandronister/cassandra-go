@@ -18,5 +18,11 @@ func NewCassandraConnection(conf *configs.Conf) (*gocql.Session, error) {
 		return nil, err
 	}
 
+	_, err = session.Query("Select * from system.local").Iter().SliceMap()
+
+	if err != nil {
+		return nil, err
+	}
+
 	return session, nil
 }
