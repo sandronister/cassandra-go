@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/sandronister/cassandra-go/internal/entity"
+	"github.com/sandronister/cassandra-go/internal/infra/database/migrations/tables"
 	"github.com/sandronister/cassandra-go/internal/infra/database/repositories"
-	"github.com/sandronister/cassandra-go/internal/services/tables"
 )
 
 type Migrations struct {

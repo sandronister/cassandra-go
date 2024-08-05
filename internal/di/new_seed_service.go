@@ -7,6 +7,7 @@ import (
 )
 
 func NewSeedService(session *gocql.Session) *services.Seed {
-	repository := repositories.NewDriverTruckRepository(session)
-	return services.NewSeed(repository)
+	driverTruckRepo := repositories.NewDriverTruckRepository(session)
+	companyRepo := repositories.NewCompanyRepository(session)
+	return services.NewSeed(driverTruckRepo, companyRepo)
 }
