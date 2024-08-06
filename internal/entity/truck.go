@@ -17,9 +17,9 @@ type Truck struct {
 	Model     string
 	Year      int
 	Plate     string
-	CreatedAt string
-	UpdatedAt string
-	DeletedAt string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt time.Time
 }
 
 func NewTruck(brand, model, plate string, year int) (*Truck, error) {
@@ -28,9 +28,7 @@ func NewTruck(brand, model, plate string, year int) (*Truck, error) {
 		Model:     model,
 		Year:      year,
 		Plate:     plate,
-		CreatedAt: time.Now().Format("2006-01-02"),
-		UpdatedAt: "",
-		DeletedAt: "",
+		CreatedAt: time.Now(),
 	}
 
 	err := truck.IsValid()

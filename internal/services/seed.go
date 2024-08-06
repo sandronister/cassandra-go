@@ -1,8 +1,10 @@
 package services
 
 import (
+	"github.com/sandronister/cassandra-go/internal/entity"
 	"github.com/sandronister/cassandra-go/internal/generates"
 	"github.com/sandronister/cassandra-go/internal/repository"
+	"golang.org/x/exp/rand"
 )
 
 type Seed struct {
@@ -21,70 +23,94 @@ func NewSeed(driverTruckRepo repository.IDriverTruck, companyRepo repository.ICo
 	}
 }
 
-func (s *Seed) CreateDrivers() error {
+func (s *Seed) CreateDrivers() ([]*entity.Driver, error) {
 
 	list, _ := s.driverRepo.FindAll()
 
 	if list != nil {
-		return nil
+		return list, nil
 	}
 
-	listDrivers := generates.Drivers(50)
-	for _, driver := range listDrivers {
+	drivers := generates.Drivers(50)
+	for _, driver := range drivers {
 		if err := s.driverRepo.Save(driver); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	return nil
+	return drivers, nil
 }
 
-func (s *Seed) CreateTrucks() error {
-	list, _ := s.driverTruckRepo.FindAll()
+func (s *Seed) CreateTrucks() ([]*entity.Truck, error) {
+	list, _ := s.truckRepo.FindAll()
 
 	if list != nil {
-		return nil
+		return list, nil
 	}
 
-	listTrucks := generates.Trucks(50)
-	for _, truck := range listTrucks {
-		if err := s.driverTruckRepo.Save(truck); err != nil {
-			return err
+	trucks := generates.Trucks(50)
+	for _, truck := range trucks {
+		if err := s.truckRepo.Save(truck); err != nil {
+			return nil, err
 		}
 	}
 
-	return nil
+	return trucks, nil
 }
 
-func (s *Seed) CreateCompany() error {
+func (s *Seed) CreateCompany() ([]*entity.Company, error) {
 	list, _ := s.companyRepo.GetAll()
 
 	if list != nil {
-		return nil
+		return list, nil
 	}
 
 	companies := generates.Company()
 
 	for _, company := range companies {
 		if err := s.companyRepo.Save(company); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	return nil
+	return companies, nil
+}
+
+func (s *Seed) CreateDriverTruck(company entity.Company, driver entity.Driver, truck entity.Truck) error {
+	driverTruck, err := entity.NewDriverTruck(company.Name, driver.LicenseId, driver.Name, truck.Brand, truck.Model, truck.Plate, truck.Year)
+
+	if err != nil {
+		return err
+	}
+
+	return s.driverTruckRepo.Save(driverTruck)
 }
 
 func (s *Seed) Run() error {
-	if err := s.CreateCompany(); err != nil {
+	companies, err := s.CreateCompany()
+
+	if err != nil {
 		return err
 	}
 
-	if err := s.CreateDrivers(); err != nil {
+	drivers, err := s.CreateDrivers()
+
+	if err != nil {
 		return err
 	}
 
-	if err := s.CreateTrucks(); err != nil {
+	trucks, err := s.CreateTrucks()
+
+	if err != nil {
 		return err
+	}
+
+	for i, driver := range drivers {
+		err = s.CreateDriverTruck(*companies[rand.Intn(len(companies))], *driver, *trucks[i])
+
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

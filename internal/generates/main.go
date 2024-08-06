@@ -41,18 +41,15 @@ func Drivers(n int) []*entity.Driver {
 	return drivers
 }
 
-func Trucks(n int) []*entity.DriversTruck {
-	var trucks []*entity.DriversTruck
+func Trucks(n int) []*entity.Truck {
+	var trucks []*entity.Truck
 	for i := 1; i <= n; i++ {
-		trucks = append(trucks, &entity.DriversTruck{
-			CompanyId:    listCompany[rand.Intn(len(listCompany))],
-			LicenseID:    uuid.New().String(),
-			Name:         fmt.Sprintf("Driver%d", i),
-			VehicleBrand: listBrand[rand.Intn(len(listBrand))],
-			VehicleModel: fmt.Sprintf("Model%d", i),
-			LicensePlate: fmt.Sprintf("ABC-%04d", i),
-			Year:         rand.Intn(30) + 1990,
-			CreatedAt:    time.Now(),
+		trucks = append(trucks, &entity.Truck{
+			Brand:     listBrand[rand.Intn(len(listBrand))],
+			Model:     fmt.Sprintf("Model%d", i),
+			Year:      2021,
+			Plate:     fmt.Sprintf("Plate%d", i),
+			CreatedAt: time.Now(),
 		})
 	}
 
