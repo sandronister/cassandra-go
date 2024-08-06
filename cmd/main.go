@@ -3,12 +3,11 @@ package main
 import (
 	"github.com/sandronister/cassandra-go/cmd/factory"
 	"github.com/sandronister/cassandra-go/internal/di"
-	"github.com/sandronister/cassandra-go/internal/infra/web/server"
 )
 
 func main() {
 
-	config, logger, db, err := factory.Initial()
+	_, logger, db, err := factory.Initial()
 
 	if err != nil {
 		panic(err)
@@ -24,10 +23,10 @@ func main() {
 	err = seedService.CreateDrivers()
 	logger.Error(err)
 
-	driverHandler := di.NewDriverHandler(db)
+	// driverHandler := di.NewDriverHandler(db)
 
-	server := server.NewServer(config.Port)
-	server.AddHDriverTruckHandler(driverHandler)
-	server.Run()
+	// server := server.NewServer(config.Port)
+	// server.AddHDriverTruckHandler(driverHandler)
+	// server.Run()
 
 }

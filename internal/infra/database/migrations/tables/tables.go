@@ -28,8 +28,8 @@ func GetDriversMigration() *InfoTable {
 		Keyspace:   "cassandra_go",
 		Table:      "drivers",
 		Fields:     "name VARCHAR, license_id VARCHAR,birth_date DATE, city VARCHAR, phone VARCHAR, email VARCHAR, created_at DATE, updated_at DATE, deleted_at DATE",
-		PrimaryKey: "company,city",
-		Orderby:    "city",
+		PrimaryKey: "(city),license_id",
+		Orderby:    "license_id",
 		Indexes: map[string]string{
 			"inx_phone": "phone",
 		},
